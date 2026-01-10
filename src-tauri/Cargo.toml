@@ -31,6 +31,7 @@ zip = "0.6"
 chrono = { version = "0.4", features = ["serde"] }
 winreg = "0.52"
 futures-util = "0.3"
+sha2 = "0.10"
 
 [features]
 default = [ "custom-protocol" ]

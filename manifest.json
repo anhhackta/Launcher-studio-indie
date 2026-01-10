@@ -1,15 +1,75 @@
 {
-  "manifest_version": "1.0",
-  "last_updated": "2025-01-20T10:00:00Z",
-  
+  "manifest_version": "2.0",
+  "last_updated": "2026-01-06T00:00:00Z",
+  "manifest_signature": "",
   "launcher_config": {
-    "current_version": "1.0.0",
-    "update_url": "https://pub-72a5a57231ae489cb74409bdc120cb93.r2.dev/launcher/GameLauncher_v1.0.1.exe",
-    "changelog": "Initial release of Game Launcher",
+    "current_version": "2.0.0",
+    "update_url": "https://pub-72a5a57231ae489cb74409bdc120cb93.r2.dev/launcher/GameLauncher_v2.0.0.exe",
+    "update_checksum": "",
+    "changelog": "Major update: News system, checksum verification, new UI",
     "auto_check_updates": true,
-    "check_interval_hours": 24
+    "check_interval_hours": 1,
+    "min_supported_version": "1.5.0"
   },
-
+  "news": [
+    {
+      "id": "news_001",
+      "title": "🎮 Welcome to AntChill Launcher 2.0!",
+      "content": "Chào mừng bạn đến với phiên bản 2.0 của AntChill Launcher! Phiên bản này mang đến giao diện hoàn toàn mới, hệ thống tin tức, và bảo mật nâng cao.",
+      "image_url": "https://files.catbox.moe/2d8fvz.png",
+      "date": "2026-01-06",
+      "type": "announcement",
+      "game_id": null,
+      "pinned": true
+    },
+    {
+      "id": "news_002",
+      "title": "Broto v0.02 - Big Update!",
+      "content": "Broto đã được cập nhật lên phiên bản 0.02 với nhiều tính năng mới và sửa lỗi quan trọng.",
+      "image_url": "https://files.catbox.moe/2d8fvz.png",
+      "date": "2026-01-05",
+      "type": "update",
+      "game_id": "brato_io",
+      "pinned": false
+    },
+    {
+      "id": "news_003",
+      "title": "AntKnow - Coming Soon Features",
+      "content": "Sắp ra mắt: Chế độ multiplayer online cho AntKnow! Theo dõi để không bỏ lỡ.",
+      "image_url": "https://files.catbox.moe/yqrb48.png",
+      "date": "2026-01-04",
+      "type": "event",
+      "game_id": "antknow",
+      "pinned": false
+    }
+  ],
+  "categories": [
+    {
+      "id": "all",
+      "name": "All Games",
+      "icon": "🎮"
+    },
+    {
+      "id": "action",
+      "name": "Action",
+      "icon": "⚔️"
+    },
+    {
+      "id": "puzzle",
+      "name": "Puzzle",
+      "icon": "🧩"
+    },
+    {
+      "id": "multiplayer",
+      "name": "Multiplayer",
+      "icon": "👥"
+    },
+    {
+      "id": "casual",
+      "name": "Casual",
+      "icon": "🎯"
+    }
+  ],
   "backgrounds": {
     "brato_io_bg": {
       "id": "brato_io_bg",
@@ -18,94 +78,134 @@
       "active": true
     },
     "antknow_bg": {
-      "id": "antknow_bg", 
+      "id": "antknow_bg",
       "name": "AntKnow Background",
       "image_url": "https://files.catbox.moe/6f2nc5.png",
       "active": true
     }
   },
-
   "games": [
     {
       "id": "brato_io",
-      "name": "broto",
-      "version": "0.01",
+      "name": "Broto",
+      "version": "0.02",
+      "category_id": "multiplayer",
       "status": "available",
       "download_url": "https://pub-72a5a57231ae489cb74409bdc120cb93.r2.dev/broto.zip",
+      "download_checksum": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "executable_path": null,
       "image_url": "https://files.catbox.moe/2d8fvz.png",
       "logo_url": "https://lh3.googleusercontent.com/pw/AP1GczMLJwyjMDaF7xJ3VS2zGuKTDnzoEBZ57qgNT39c9_kthr_5POsfSnR0Wpacn9tz4CeYjciAuAIZPDO7N67wUswUC7cDpJTymmKlxH2ehuTHvwoUcyM=w2400",
+      "banner_url": "https://files.catbox.moe/2d8fvz.png",
       "background_id": "brato_io_bg",
       "description": "A space exploration game with stunning visuals and engaging gameplay.",
+      "description_long": "Broto là một tựa game .io vũ trụ với đồ họa tuyệt đẹp. Khám phá không gian, thu thập tài nguyên, và chiến đấu với người chơi khác trong thế giới rộng lớn.",
       "file_size": "37.54 MB",
-      "release_date": "5-9-2025",
-      "changelog": "Initial release with space exploration mechanics.",
+      "file_size_bytes": 39370137,
+      "release_date": "2025-09-05",
+      "last_updated": "2026-01-01",
+      "changelog": "v0.02: New maps, bug fixes, performance improvements",
+      "developer": "AntChill Studio",
+      "publisher": "AntChill",
+      "tags": [
+        "multiplayer",
+        "io-game",
+        "space",
+        "action"
+      ],
+      "screenshots": [
+        "https://files.catbox.moe/2d8fvz.png"
+      ],
+      "trailer_url": null,
+      "system_requirements": {
+        "os": "Windows 10+",
+        "ram": "4 GB",
+        "storage": "100 MB"
+      },
       "is_coming_soon": false,
       "repair_enabled": true
     },
     {
       "id": "antknow",
-      "name": "AntKnow", 
-      "version": "0.01",
+      "name": "AntKnow",
+      "version": "0.02",
+      "category_id": "puzzle",
       "status": "available",
       "download_url": "https://pub-72a5a57231ae489cb74409bdc120cb93.r2.dev/AntKnow.zip",
+      "download_checksum": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "executable_path": null,
       "image_url": "https://files.catbox.moe/yqrb48.png",
       "logo_url": "https://lh3.googleusercontent.com/pw/AP1GczNZq-auYxUvVXyPKce-MVkITxLbwAkSv3IJLLwH7toRhEo_8oEHI4R0Vs9-lVluYdbCPegG0I2oIR_dSqRJXMkO5ibytMLneSvCxppwCus9boxvEqM=w2400",
+      "banner_url": "https://files.catbox.moe/yqrb48.png",
       "background_id": "antknow_bg",
       "description": "Game Cờ tỷ phú kết hợp Quiz do Hoàng phát triển",
+      "description_long": "AntKnow kết hợp gameplay cờ tỷ phú cổ điển với các câu hỏi quiz thú vị. Thử thách kiến thức của bạn trong khi xây dựng đế chế bất động sản!",
       "file_size": "107.33 MB",
-      "release_date": "3-10-2025",
-      "changelog": "bản phát hành đầu tiên demo lỗi",
+      "file_size_bytes": 112541900,
+      "release_date": "2025-10-03",
+      "last_updated": "2026-01-03",
+      "changelog": "v0.02: New questions, UI improvements",
+      "developer": "Hoàng",
+      "publisher": "AntChill",
+      "tags": [
+        "puzzle",
+        "quiz",
+        "board-game",
+        "educational"
+      ],
+      "screenshots": [
+        "https://files.catbox.moe/yqrb48.png"
+      ],
+      "trailer_url": null,
+      "system_requirements": {
+        "os": "Windows 10+",
+        "ram": "4 GB",
+        "storage": "200 MB"
+      },
       "is_coming_soon": false,
       "repair_enabled": true
     }
   ],
-
   "social_links": [
     {
       "id": "home",
-      "icon": "src-tauri/social/home.png",
+      "icon": "/social/home.png",
       "url": "https://anhhackta.github.io",
       "tooltip": "Website",
       "active": true
     },
     {
       "id": "facebook",
-      "icon": "src-tauri/social/facebook.png",
+      "icon": "/social/facebook.png",
       "url": "https://facebook.com/anhhackta.official",
       "tooltip": "Facebook",
       "active": true
     },
     {
       "id": "discord",
-      "icon": "src-tauri/social/discord.png",
+      "icon": "/social/discord.png",
       "url": "https://discord.gg/3J2nemTtDq",
       "tooltip": "Discord",
       "active": true
     },
     {
       "id": "email",
-      "icon": "src-tauri/social/email.png",
+      "icon": "/social/email.png",
       "url": "mailto:bahoangcran@gmail.com",
       "tooltip": "Email Support",
       "active": true
-    },
-    {
-      "id": "repair",
-      "icon": "src-tauri/social/repair.png",
-      "url": "#",
-      "tooltip": "Repair Game Files",
-      "active": true,
-      "action": "repair_game"
     }
   ],
-
   "settings": {
-    "startup_with_windows": true,
+    "startup_with_windows": false,
     "minimize_to_tray": true,
     "auto_check_updates": true,
-    "download_path": "games",
-    "max_backups": 3
+    "download_path": "AntChillGame",
+    "max_backups": 3,
+    "max_concurrent_downloads": 2,
+    "download_speed_limit": 0,
+    "verify_after_download": true,
+    "theme": "dark",
+    "language": "vi"
   }
 }

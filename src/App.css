@@ -1,21 +1,27 @@
 /* ============================================
-   AntChill Launcher - Immersive Design System (Arknights Endfield Style)
+   AntChill Launcher - Soft Glassmorphism Design
+   (Samurai Quest Theme)
    ============================================ */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Rajdhani:wght@500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;800&family=Pixelify+Sans:wght@700&display=swap');
 
 :root {
-  --primary: #f8c325; /* Endfield Yellow/Gold Accent */
-  --primary-glow: rgba(248, 195, 37, 0.4);
-  --bg-dark: #0a0b10;
-  --bg-overlay: rgba(10, 11, 16, 0.75);
-  --bg-panel: rgba(15, 17, 26, 0.85);
-  --text-main: #ffffff;
-  --text-muted: #8b92a5;
-  --border-tech: rgba(255, 255, 255, 0.15);
+  --primary-cyan: #00f0ff;
+  --bg-dark: #121517;
+  --text-main: #1c1c1c;
+  --text-muted: #8e8e8e;
   
-  --radius-sm: 2px;
-  --radius-md: 4px; /* Techy hard edges */
-  --radius-lg: 8px;
+  --glass-bg: rgba(255, 255, 255, 0.45);
+  --glass-border: rgba(255, 255, 255, 0.7);
+  --card-bg: #ffffff;
+  
+  --radius-sm: 16px;
+  --radius-md: 24px;
+  --radius-lg: 32px;
+  --radius-xl: 40px;
+  --radius-full: 9999px;
+  
+  --shadow-soft: 0 10px 40px rgba(0, 0, 0, 0.1);
+  --shadow-glow: 0 8px 30px rgba(0, 240, 255, 0.4);
   
   --transition: 0.3s cubic-bezier(0.25, 1, 0.5, 1);
 }
@@ -27,434 +33,545 @@
 }
 
 html, body {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Inter', -apple-system, sans-serif;
   color: var(--text-main);
-  background-color: var(--bg-dark);
+  background-color: var(--bg-dark); /* fallback */
   overflow: hidden;
   height: 100vh;
   user-select: none;
 }
 
-h1, h2, h3, h4, .btn-text, .game-title-large {
-  font-family: 'Rajdhani', sans-serif;
-  text-transform: uppercase;
+.heading-font {
+  font-family: 'Outfit', sans-serif;
+}
+
+.title-font {
+  font-family: 'Pixelify Sans', cursive; /* To emulate SAMURAI QUEST edgy text */
+}
+
+/* ================== App Layout ================== */
+.app-container {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Base Blur layer to blur background image globally */
+.bg-vfx {
+  position: absolute;
+  inset: -50px;
+  background-size: cover;
+  background-position: center;
+  filter: blur(15px) brightness(0.7) saturate(1.2);
+  z-index: 0;
+}
+
+/* Main Glass Board */
+.main-glass-board {
+  position: relative;
+  z-index: 10;
+  width: 95vw;
+  max-width: 1500px;
+  height: 90vh;
+  background: var(--glass-bg);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-soft);
+  padding: 24px;
+  
+  display: flex;
+  gap: 24px;
+}
+
+/* ================== Sidebar Navbar ================== */
+.nav-sidebar {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.nav-pill {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 0;
+  width: 60px;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(10px);
+  border-radius: var(--radius-full);
+  margin-top: 40px; /* Leave space for text above */
+}
+
+.nav-logo-text {
+  position: absolute;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Outfit', sans-serif;
+  font-weight: 800;
+  font-size: 18px;
+  color: var(--text-main);
   letter-spacing: 1px;
 }
 
-/* ================== Layout ================== */
-.app-immersive {
-  position: relative;
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-/* ================= Background ================= */
-.background-layer {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  background-color: var(--bg-dark);
-}
-
-.background-image {
-  position: absolute;
-  inset: -20px; /* Buffer for subtle parallax if needed */
-  background-size: cover;
-  background-position: center;
-  filter: brightness(0.7);
-  transition: background-image 0.5s ease-in-out;
-}
-
-.background-vignette {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at center, transparent 30%, rgba(0,0,0,0.6) 100%),
-              linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 40%),
-              linear-gradient(to right, rgba(0,0,0,0.6) 0%, transparent 50%);
-}
-
-.background-tech-grid {
-  position: absolute;
-  inset: 0;
-  background-image: 
-    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-  background-size: 40px 40px;
-  pointer-events: none;
-}
-
-/* ================== Top Bar ================== */
-.top-bar {
-  position: relative;
-  z-index: 100;
-  height: 50px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 20px;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.7), transparent);
-}
-
-.top-bar-left {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.top-bar-logo {
-  width: 24px;
-  height: 24px;
-}
-
-.top-bar-title {
-  font-weight: 700;
-  font-size: 14px;
-  color: rgba(255,255,255,0.8);
-  letter-spacing: 2px;
-}
-
-.top-bar-right {
-  display: flex;
-  gap: 4px;
-}
-
-.top-bar-btn {
-  background: transparent;
+.nav-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
   border: none;
-  color: var(--text-muted);
-  width: 36px;
-  height: 36px;
+  background: white;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: color 0.2s, background 0.2s;
-  border-radius: var(--radius-sm);
-}
-
-.top-bar-btn:hover {
+  transition: all var(--transition);
   color: var(--text-main);
-  background: rgba(255,255,255,0.1);
 }
 
-.close-btn:hover {
-  background: rgba(239, 68, 68, 0.8);
-  color: white;
+.nav-btn svg {
+  width: 20px;
+  height: 20px;
 }
 
-/* ================= Content Layer ================= */
-.content-layer {
-  position: relative;
-  z-index: 10;
+.nav-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.nav-btn.active {
+  background: var(--primary-cyan);
+  color: #fff;
+}
+
+/* ================== Main Hero Area ================== */
+.hero-wrapper {
   flex: 1;
-  display: flex;
-  justify-content: space-between;
-  padding: 40px;
-  pointer-events: none; /* Let clicks pass through empty areas */
-}
-
-.content-layer > * {
-  pointer-events: auto; /* Re-enable for child panels */
-}
-
-/* ================= News Panel ================= */
-.news-panel {
-  width: 320px;
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding-top: 60px;
 }
 
-.news-header h3 {
-  font-size: 16px;
-  color: var(--primary);
+.hero-image-card {
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+/* Custom Overlay for Project info & Play Button */
+.hero-overlay-card {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 380px;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(20px);
+  border-top-right-radius: 60px;
+  padding: 32px;
+  border-top: 1px solid var(--glass-border);
+  border-right: 1px solid var(--glass-border);
+}
+
+.hero-project-id {
+  font-weight: 600;
+  color: var(--text-main);
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.hero-game-title {
+  font-family: 'Pixelify Sans', cursive;
+  font-size: 32px;
+  font-weight: 700;
+  color: #111;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 32px;
   display: flex;
-  align-items: center;
+  align-items: baseline;
   gap: 8px;
 }
 
-.news-header h3::before {
-  content: '';
-  display: block;
-  width: 4px;
-  height: 16px;
-  background: var(--primary);
+.hero-game-title span {
+  color: #eab308; /* Yellow accent in image */
 }
 
-.news-list {
+/* Play/Adventure Button */
+.btn-adventure {
   display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.news-item {
-  background: rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(8px);
-  border-left: 2px solid var(--border-tech);
-  padding: 12px 16px;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background: white;
+  padding: 12px 16px 12px 24px;
+  border-radius: var(--radius-full);
+  border: none;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 600;
+  font-size: 16px;
   cursor: pointer;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
   transition: all var(--transition);
 }
 
-.news-item:hover {
-  background: rgba(0, 0, 0, 0.6);
-  border-left-color: var(--primary);
-  transform: translateX(4px);
+.btn-adventure:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
 }
 
-.news-tag {
-  display: inline-block;
-  font-size: 10px;
-  font-weight: 700;
-  padding: 2px 6px;
-  background: rgba(255,255,255,0.1);
-  margin-right: 8px;
-  border-radius: 2px;
+.btn-adventure:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
 }
 
-.tag-update { background: rgba(99, 102, 241, 0.3); color: #818cf8; }
-.tag-event { background: rgba(245, 158, 11, 0.3); color: #fbbf24; }
-
-.news-date {
-  font-size: 11px;
-  color: var(--text-muted);
-}
-
-.news-title {
-  margin-top: 6px;
-  font-size: 13px;
-  line-height: 1.4;
-}
-
-/* ================= Action Area ================= */
-.action-area {
-  position: absolute;
-  bottom: 60px;
-  right: 60px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 24px;
-}
-
-.action-game-info {
-  text-align: right;
-}
-
-.game-title-large {
-  font-size: 56px;
-  font-weight: 800;
-  line-height: 1;
-  text-shadow: 0 4px 20px rgba(0,0,0,0.8);
-  margin-bottom: 8px;
-}
-
-.game-meta-row {
+.btn-cyan-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--primary-cyan);
   display: flex;
   align-items: center;
-  justify-content: flex-end;
-  gap: 16px;
-  font-family: 'Rajdhani', sans-serif;
-  font-size: 16px;
-  font-weight: 600;
-  color: var(--text-muted);
+  justify-content: center;
+  color: white;
 }
 
-.action-controls {
+.btn-cyan-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* ================== Stats & Download Pill ================== */
+/* Placed absolutely to overlay between hero and right panel */
+.download-pill-wrapper {
+  position: absolute;
+  bottom: 0;
+  left: 55%; /* approximate positioning */
+  transform: translateX(-50%);
+  z-index: 20;
+}
+
+.download-pill {
+  background: white;
+  border-top-left-radius: 40px;
+  border-top-right-radius: 40px;
+  border-bottom-left-radius: 30px;
+  border-bottom-right-radius: 30px;
+  padding: 16px 32px 32px 32px;
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
-  gap: 12px;
-}
-
-.primary-action-btn {
+  align-items: center;
+  box-shadow: var(--shadow-soft);
+  min-width: 250px;
   position: relative;
-  width: 280px;
-  height: 72px;
+}
+
+.pill-title {
+  font-size: 18px;
+  font-weight: 600;
+  font-family: 'Outfit', sans-serif;
+  margin-bottom: 12px;
+}
+
+.pill-stats {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.stat-item svg {
+  width: 18px;
+  height: 18px;
+  color: var(--text-main);
+}
+
+.btn-circle-download {
+  position: absolute;
+  bottom: -20px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--primary-cyan);
   border: none;
-  background: var(--primary);
-  color: #000;
-  font-size: 24px;
-  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
   cursor: pointer;
-  overflow: hidden;
-  clip-path: polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px);
-  transition: all 0.2s;
+  box-shadow: var(--shadow-glow);
+  transition: all var(--transition);
 }
 
-.primary-action-btn:hover:not(:disabled) {
-  transform: scale(1.02);
-  box-shadow: 0 0 30px var(--primary-glow);
+.btn-circle-download:hover {
+  transform: scale(1.1);
 }
 
-.primary-action-btn:disabled {
-  background: #333;
-  color: #666;
+.btn-circle-download:disabled {
+  background: #ccc;
+  box-shadow: none;
   cursor: not-allowed;
 }
 
-.primary-action-btn.btn-play {
-  background: var(--primary);
+.btn-circle-download svg {
+  width: 24px;
+  height: 24px;
 }
 
-.primary-action-btn.btn-download {
-  background: #ffffff;
-}
-
-.primary-action-btn.btn-downloading {
-  background: transparent;
-  border: 2px solid var(--primary);
-  color: var(--primary);
-}
-
-/* ================= Progress Bar ================= */
-.download-progress-container {
-  width: 280px;
-  background: rgba(0,0,0,0.6);
-  padding: 12px;
-  border: 1px solid var(--border-tech);
-  clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
-}
-
-.progress-bar-track {
-  height: 4px;
-  background: rgba(255,255,255,0.1);
-  margin-bottom: 8px;
-}
-
-.progress-bar-fill {
-  height: 100%;
-  background: var(--primary);
-  box-shadow: 0 0 10px var(--primary-glow);
-  transition: width 0.2s linear;
-}
-
-.progress-stats {
+/* If downloading, show progress */
+.download-progress-mini {
+  position: absolute;
+  bottom: -25px;
+  left: 0;
+  right: 0;
+  background: white;
+  border-radius: var(--radius-full);
+  padding: 8px 16px;
+  box-shadow: var(--shadow-soft);
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
   font-size: 11px;
-  font-family: 'Rajdhani', sans-serif;
   font-weight: 600;
+}
+
+.progress-mini-bar {
+  width: 100%;
+  height: 4px;
+  background: #eee;
+  border-radius: 2px;
+}
+
+.progress-mini-fill {
+  height: 100%;
+  background: var(--primary-cyan);
+  border-radius: 2px;
+  transition: width 0.3s;
+}
+
+/* ================== Right Panel ================== */
+.right-panel {
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.info-card {
+  background: white;
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: var(--shadow-soft);
+  flex: 1;
+}
+
+.profile-row {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.profile-row span {
+  font-size: 14px;
+  font-weight: 500;
   color: var(--text-muted);
 }
 
-.progress-percentage {
-  color: var(--primary);
-}
-
-/* ================= Game Switcher ================= */
-.game-switcher-drawer {
-  position: absolute;
-  top: 100px;
-  right: -250px;
-  width: 300px;
-  transition: right var(--transition);
-  display: flex;
-  align-items: flex-start;
-  z-index: 50;
-}
-
-.game-switcher-drawer.open {
-  right: 0;
-}
-
-.switcher-toggle-btn {
-  writing-mode: vertical-rl;
-  transform: rotate(180deg);
-  background: rgba(0,0,0,0.8);
-  color: white;
-  border: 1px solid var(--border-tech);
-  border-right: none;
-  padding: 24px 8px;
-  font-family: 'Rajdhani', sans-serif;
-  font-size: 14px;
-  font-weight: 700;
-  letter-spacing: 2px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.switcher-toggle-btn:hover {
-  background: var(--primary);
-  color: black;
-}
-
-.switcher-icon {
-  transform: rotate(90deg);
-  font-size: 18px;
-}
-
-.switcher-list {
-  background: rgba(0,0,0,0.9);
-  backdrop-filter: blur(20px);
-  border-left: 1px solid var(--border-tech);
-  width: 250px;
-  height: calc(100vh - 200px);
-  padding: 20px 10px;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.switcher-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 8px;
-  cursor: pointer;
-  border: 1px solid transparent;
-  transition: all 0.2s;
-  background: rgba(255,255,255,0.02);
-}
-
-.switcher-item:hover {
-  background: rgba(255,255,255,0.1);
-  border-color: rgba(255,255,255,0.2);
-}
-
-.switcher-item.active {
-  background: rgba(248, 195, 37, 0.1);
-  border-color: var(--primary);
-}
-
-.switcher-item img {
-  width: 48px;
-  height: 48px;
+.profile-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
   object-fit: cover;
 }
 
-.switcher-item-name {
-  font-family: 'Rajdhani', sans-serif;
-  font-weight: 700;
-  font-size: 16px;
+.coupon-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
 }
 
-/* Scrollbar overrides for dark theme */
-::-webkit-scrollbar {
-  width: 6px;
-}
-::-webkit-scrollbar-track {
-  background: rgba(0,0,0,0.5);
-}
-::-webkit-scrollbar-thumb {
-  background: var(--border-tech);
-}
-::-webkit-scrollbar-thumb:hover {
-  background: var(--primary);
+.coupon-tag {
+  background: #f1f5f9;
+  padding: 8px 16px;
+  border-radius: var(--radius-full);
+  font-weight: 600;
+  font-size: 13px;
 }
 
-/* Basic classes for standard states */
+.coupon-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: white;
+  border: none;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.coupon-icon {
+  background: #ffb44d;
+  color: white;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.upcoming-art {
+  display: flex;
+  justify-content: center;
+  margin: 32px 0;
+}
+
+.swords-icon {
+  width: 80px;
+  height: auto;
+  opacity: 0.8;
+}
+
+.upcoming-info h4 {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.upcoming-info h2 {
+  font-size: 20px;
+  font-family: 'Outfit', sans-serif;
+  margin-bottom: 8px;
+}
+
+.upcoming-info p {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+}
+
+.social-icons {
+  display: flex;
+  gap: 16px;
+  justify-content: flex-end;
+}
+
+.social-icons svg {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.social-icons svg:hover {
+  transform: scale(1.1);
+}
+
+/* ================== Trailer Card ================== */
+.trailer-card {
+  height: 220px;
+  border-radius: var(--radius-lg);
+  background: white;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-soft);
+}
+
+.trailer-image-wrapper {
+  flex: 1;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  position: relative;
+  background-size: cover;
+  background-position: center;
+}
+
+.btn-play-trailer {
+  position: absolute;
+  bottom: -15px; /* stick out */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--primary-cyan);
+  border: none;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: var(--shadow-glow);
+  transition: transform 0.2s;
+}
+
+.btn-play-trailer:hover {
+  transform: translateX(-50%) scale(1.1);
+}
+
+.trailer-label {
+  text-align: center;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 16px 0 8px 0; /* padding for sticking button out */
+}
+
+/* Extra Window Controls */
+.window-controls-float {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  display: flex;
+  gap: 8px;
+  z-index: 1000;
+  -webkit-app-region: no-drag;
+}
+
+.window-ctrl-btn {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+}
+.window-close { background: #ff5f56; }
+.window-minimize { background: #ffbd2e; }
+
+/* Hide loading logic visually to match new theme */
 .loading-screen, .error-screen {
   position: fixed;
   inset: 0;
-  background: var(--bg-dark);
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   z-index: 9999;

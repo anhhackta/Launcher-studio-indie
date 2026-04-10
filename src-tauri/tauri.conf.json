@@ -8,7 +8,7 @@
   },
   "package": {
     "productName": "AntChill Launcher",
-    "version": "0.0.0"
+    "version": "1.0.0"
   },
   "tauri": {
     "allowlist": {
@@ -16,11 +16,11 @@
       "shell": {
         "all": false,
         "open": true,
-        "execute": true
+        "execute": false
       },
       "fs": {
         "all": true,
-        "scope": ["**"]
+        "scope": ["$RESOURCE/**", "$APPDATA/**", "AntChillGame/**"]
       },
       "http": {
         "all": true,
@@ -57,7 +57,7 @@
       ]
     },
     "security": {
-      "csp": null
+      "csp": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' https: data:; connect-src 'self' https://pub-72a5a57231ae489cb74409bdc120cb93.r2.dev https://fonts.googleapis.com https://fonts.gstatic.com"
     },
     "systemTray": {
       "iconPath": "icons/icon.ico",

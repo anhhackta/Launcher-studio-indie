@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { invoke } from '@tauri-apps/api/tauri';
 import { GameInfo, NetworkStatus } from '../types';
 
@@ -9,19 +9,20 @@ export function useGameManager() {
     const [error, setError] = useState<string | null>(null);
     const [isOfflineMode, setIsOfflineMode] = useState(false);
 
+    // Use ref to avoid stale closure in setInterval callback
+    const isOfflineModeRef = useRef(isOfflineMode);
+    isOfflineModeRef.current = isOfflineMode;
+
     const loadLauncher = useCallback(async () => {
         try {
             setIsLoading(true);
             setError(null);
 
-            // Try to load games first
             const gamesResult = await invoke<GameInfo[]>('get_games');
 
-            // Check network status
             const networkResult = await invoke<NetworkStatus>('check_network_status');
             setIsOfflineMode(!networkResult.is_online);
 
-            // Scan for installed games
             try {
                 const scannedGames = await invoke<GameInfo[]>('scan_local_games', { games: gamesResult });
                 setGames(scannedGames);
@@ -47,19 +48,19 @@ export function useGameManager() {
         }
     }, []);
 
+    // Periodic connection check with stable interval (no stale closure)
     useEffect(() => {
         loadLauncher();
 
-        // Check connection periodically
         const checkConnectionInterval = setInterval(async () => {
             try {
                 const result = await invoke<NetworkStatus>('check_network_status');
 
-                if (result.is_online && isOfflineMode) {
+                if (result.is_online && isOfflineModeRef.current) {
                     setIsOfflineMode(false);
                     setError(null);
                     loadLauncher();
-                } else if (!result.is_online && !isOfflineMode) {
+                } else if (!result.is_online && !isOfflineModeRef.current) {
                     setIsOfflineMode(true);
                 }
             } catch (err) {
@@ -68,7 +69,7 @@ export function useGameManager() {
         }, 30000);
 
         return () => clearInterval(checkConnectionInterval);
-    }, [isOfflineMode, loadLauncher]);
+    }, [loadLauncher]); // Only depends on loadLauncher (stable via useCallback)
 
     const refreshGames = useCallback(async () => {
         try {
@@ -76,7 +77,6 @@ export function useGameManager() {
             const scannedGames = await invoke<GameInfo[]>('scan_local_games', { games: gamesResult });
             setGames(scannedGames);
 
-            // Update selected game if it exists
             if (selectedGame) {
                 const updated = scannedGames.find(g => g.id === selectedGame.id);
                 if (updated) {

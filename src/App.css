@@ -24,9 +24,10 @@
   --r-md:           14px;
   --r-lg:           18px;
 
-  /* PIG: left edge = var(--gap), fixed anchor */
+  /* PIG dimensions + expand offset */
   --pig-collapsed:  64px;
   --pig-expanded:   190px;
+  --pig-expand-offset: calc(var(--pig-expanded) - var(--pig-collapsed)); /* 126px */
 
   --ease:           cubic-bezier(0.22, 1, 0.36, 1);
   --t-fast:         0.15s;
@@ -139,16 +140,15 @@ img { display: block; }
 .error-retry-btn:hover { background: rgba(232,200,64,0.08); box-shadow: 0 0 16px var(--c-accent-glow); }
 
 /* =========================================================
-   PANEL ICON GAME — absolute in app-root, expands LEFT
-   Left edge FIXED at 0. Width grows rightward.
-   When expanded, panel extends rightward (toward panel-main).
-   No overflow clipping from app-root (transparent + visible).
+   PANEL ICON GAME — expands LEFT into transparent offset zone.
+   Right edge stays fixed. Left edge moves left on expand.
+   Offset zone provides space for leftward expansion.
    ========================================================= */
 .panel-icon-game {
   position: absolute;
   z-index: 30;
-  /* Anchor left edge so the panel grows rightward on expand */
-  left: var(--gap);
+  /* Position right edge fixed: gap + offset + collapsed = right anchor */
+  left: calc(var(--gap) + var(--pig-expand-offset));
   top: var(--gap);
   bottom: var(--gap);
   width: var(--pig-collapsed);
@@ -164,18 +164,19 @@ img { display: block; }
   align-items: flex-end;
   overflow: hidden;
 
-  pointer-events: auto; /* re-enable clicks for this panel */
+  pointer-events: auto;
 
   transition:
     width var(--t-med) var(--ease),
+    left var(--t-med) var(--ease),
     border-color var(--t-fast),
     box-shadow var(--t-med) var(--ease);
 }
 
 .panel-icon-game.expanded {
   width: var(--pig-expanded);
-  border-color: var(--c-border-hi);
-  box-shadow: 6px 0 40px rgba(0,0,0,0.6);
+  /* Move left edge back to gap, right edge stays fixed */
+  left: var(--gap);
 }
 
 /* Logo row — icon on right, text on left */
@@ -243,8 +244,8 @@ img { display: block; }
   text-align: right;
   justify-content: flex-end;
 }
-.pig-game-item:hover  { background: rgba(255,255,255,0.05); }
-.pig-game-item.active { background: rgba(232,200,64,0.06); }
+.pig-game-item:hover  { background: transparent; }
+.pig-game-item.active { background: transparent; }
 
 .pig-active-bar {
   position: absolute;

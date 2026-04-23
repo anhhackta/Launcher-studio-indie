@@ -4,16 +4,20 @@
 .panel-main {
   position: absolute;
   z-index: 10;
-  left: calc(var(--gap) + var(--pig-collapsed) + var(--gap));
+  left: calc(var(--gap) + var(--pig-expand-offset) + var(--pig-collapsed) + var(--gap));
   right: var(--gap);
   top: var(--gap);
   bottom: var(--gap);
 
   background: #e8ecf1;
-  border: 1px solid rgba(0,0,0,0.08);
+  border: 1.5px solid rgba(94, 231, 215, 0.35);
   border-radius: 24px;
   overflow: hidden;
   pointer-events: auto;
+  box-shadow:
+    0 0 0 1px rgba(94, 231, 215, 0.08),
+    0 0 30px rgba(94, 231, 215, 0.1),
+    0 8px 32px rgba(0, 0, 0, 0.08);
 
   display: grid;
   grid-template-columns: 1.5fr 1fr;

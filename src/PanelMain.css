@@ -1,0 +1,368 @@
+/* =========================================================
+   PANEL MAIN — Bento Grid Light Theme
+   ========================================================= */
+.panel-main {
+  position: absolute;
+  z-index: 10;
+  left: calc(var(--gap) + var(--pig-expand-offset) + var(--pig-collapsed) + var(--gap));
+  right: var(--gap);
+  top: var(--gap);
+  bottom: var(--gap);
+
+  background: #e8ecf1;
+  border: 1.5px solid rgba(94, 231, 215, 0.35);
+  border-radius: 24px;
+  overflow: hidden;
+  pointer-events: auto;
+  box-shadow:
+    0 0 0 1px rgba(94, 231, 215, 0.08),
+    0 0 30px rgba(94, 231, 215, 0.1),
+    0 8px 32px rgba(0, 0, 0, 0.08);
+
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  grid-template-rows: 1fr auto;
+  gap: 10px;
+  padding: 10px;
+}
+
+/* Drag region */
+.pm-drag-region {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 48px;
+  z-index: 20;
+  -webkit-app-region: drag;
+}
+
+/* ── Window Controls ── */
+.pm-window-controls {
+  position: absolute;
+  top: 16px; right: 18px;
+  z-index: 25;
+  display: flex; align-items: center; gap: 6px;
+  -webkit-app-region: no-drag;
+}
+.pm-wc-btn {
+  width: 30px; height: 30px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(255,255,255,0.7); border: 1px solid rgba(0,0,0,0.06);
+  backdrop-filter: blur(8px);
+  transition: all 0.15s ease; color: #8a919a;
+}
+.pm-wc-btn svg { width: 13px; height: 13px; }
+.pm-wc-btn:hover { background: rgba(255,255,255,0.95); color: #333; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+.pm-wc-minimize:hover { background: rgba(255,189,46,0.15); color: #b8860b; }
+.pm-wc-close:hover { background: rgba(255,80,80,0.15); color: #cc3333; }
+
+/* =========================================================
+   HERO CARD — left column, spans row 1
+   ========================================================= */
+.pm-hero-card {
+  grid-column: 1; grid-row: 1;
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* Nav icons overlay */
+.pm-nav-icons {
+  position: absolute; top: 16px; left: 16px;
+  z-index: 10;
+  display: flex; flex-direction: column; gap: 8px;
+  -webkit-app-region: no-drag;
+}
+.pm-nav-btn {
+  width: 38px; height: 38px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(255,255,255,0.75);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.5);
+  color: #6b7280; transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.pm-nav-btn svg { width: 17px; height: 17px; }
+.pm-nav-btn:hover { background: #fff; color: #333; transform: scale(1.08); }
+.pm-nav-btn.pm-nav-active {
+  background: #2d3748; color: #fff;
+  border-color: #2d3748;
+}
+
+/* Hero background */
+.pm-hero-bg {
+  position: absolute; inset: 0;
+  background-size: cover;
+  background-position: center 20%;
+  transition: background-image 0.5s ease;
+}
+.pm-hero-gradient {
+  position: absolute; inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0,0,0,0.75) 0%,
+    rgba(0,0,0,0.3) 30%,
+    transparent 60%
+  );
+  z-index: 1;
+}
+
+/* Brand watermark */
+.pm-hero-brand {
+  position: absolute; top: 16px; left: 70px;
+  z-index: 5;
+  font-size: 14px; color: rgba(255,255,255,0.6);
+  font-weight: 300; letter-spacing: 2px;
+}
+
+/* Hero content overlay */
+.pm-hero-content {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  z-index: 5;
+  padding: 0 24px 24px;
+  display: flex; flex-direction: column;
+  align-items: flex-start; gap: 6px;
+}
+.pm-hero-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px; font-weight: 500;
+  color: rgba(255,255,255,0.7);
+  letter-spacing: 1px;
+}
+.pm-hero-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: clamp(24px, 3vw, 38px);
+  font-weight: 700; line-height: 1;
+  letter-spacing: 3px; color: #fff;
+  text-shadow: 0 2px 16px rgba(0,0,0,0.6);
+}
+
+/* CTA Button — white pill with teal arrow */
+.pm-hero-btn {
+  display: flex; align-items: center; gap: 0;
+  margin-top: 6px;
+  background: #fff; border: none;
+  border-radius: 30px;
+  padding: 0;
+  overflow: hidden;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px; font-weight: 600;
+  color: #1a1a2e;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+.pm-hero-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(0,0,0,0.3);
+}
+.pm-hero-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.pm-hero-btn.downloading { opacity: 0.7; }
+.pm-hero-btn-text { padding: 10px 14px 10px 18px; }
+.pm-hero-btn-arrow {
+  display: flex; align-items: center; justify-content: center;
+  width: 36px; height: 36px;
+  background: #5ee7d7; border-radius: 50%;
+  margin: 3px; color: #fff; flex-shrink: 0;
+}
+.pm-hero-btn-arrow svg { width: 14px; height: 14px; }
+
+/* Progress overlay */
+.pm-hero-progress {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 4px; background: rgba(0,0,0,0.3); z-index: 8;
+}
+.pm-hero-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #5ee7d7, #4ecdc4);
+  transition: width 0.4s ease;
+}
+
+/* =========================================================
+   DOWNLOAD CARD — bottom-left
+   ========================================================= */
+.pm-download-card {
+  grid-column: 1; grid-row: 2;
+  background: #fff;
+  border-radius: 16px;
+  padding: 14px 18px;
+  display: flex; align-items: center; gap: 14px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+}
+.pm-dl-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 16px; font-weight: 700;
+  color: #1a1a2e; letter-spacing: 0.5px;
+  margin-right: auto;
+}
+.pm-dl-stats {
+  display: flex; align-items: center; gap: 16px;
+}
+.pm-dl-stat {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 12px; color: #6b7280;
+}
+.pm-dl-stat svg { width: 16px; height: 16px; stroke: #9ca3af; }
+.pm-dl-btn {
+  width: 36px; height: 36px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: #f0f4f8; border: 1px solid #e2e8f0;
+  color: #5ee7d7; transition: all 0.2s ease;
+}
+.pm-dl-btn svg { width: 16px; height: 16px; }
+.pm-dl-btn:hover { background: #5ee7d7; color: #fff; border-color: #5ee7d7; }
+.pm-dl-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* =========================================================
+   SIDEBAR — right column, spans all rows
+   ========================================================= */
+.pm-sidebar {
+  grid-column: 2; grid-row: 1 / -1;
+  display: flex; flex-direction: column;
+  gap: 10px; min-height: 0;
+}
+
+/* User Card */
+.pm-user-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 10px 14px;
+  display: flex; align-items: center;
+  justify-content: flex-end; gap: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+  flex-shrink: 0;
+}
+.pm-user-greeting {
+  font-size: 13px; font-weight: 600; color: #1a1a2e;
+}
+.pm-user-avatar {
+  width: 32px; height: 32px; border-radius: 50%;
+  overflow: hidden; flex-shrink: 0;
+  border: 2px solid #e2e8f0;
+}
+.pm-user-avatar img {
+  width: 100%; height: 100%; object-fit: cover;
+}
+
+/* Info Card — Promo + Upcoming */
+.pm-info-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 14px 16px;
+  display: flex; flex-direction: column;
+  align-items: center; gap: 10px;
+  flex: 1; min-height: 0;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+  overflow: hidden;
+}
+
+/* Promo row */
+.pm-promo-row {
+  display: flex; align-items: center; gap: 10px;
+  width: 100;
+}
+.pm-promo-tag {
+  padding: 4px 12px;
+  background: #f8f9fa;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  font-size: 12px; font-weight: 600; color: #1a1a2e;
+}
+.pm-promo-coupon {
+  display: flex; align-items: center; gap: 6px;
+  padding: 4px 12px;
+  background: #f8f9fa;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  font-size: 11px; font-weight: 500; color: #4b5563;
+  cursor: pointer; transition: all 0.15s ease;
+}
+.pm-promo-coupon:hover { background: #eef2f7; }
+.pm-promo-icon {
+  font-size: 16px;
+  width: 28px; height: 28px;
+  background: #f97316;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  color: white; font-size: 14px;
+}
+
+/* Upcoming game logo */
+.pm-upcoming-logo {
+  width: 80px; height: 80px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.pm-upcoming-logo svg { width: 100%; height: 100%; }
+
+/* Upcoming info */
+.pm-upcoming-info {
+  text-align: center;
+  display: flex; flex-direction: column; gap: 2px;
+}
+.pm-upcoming-label {
+  font-size: 10px; font-weight: 600;
+  color: #9ca3af; text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.pm-upcoming-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 16px; font-weight: 700;
+  color: #1a1a2e; letter-spacing: 0.5px;
+}
+.pm-upcoming-date {
+  font-size: 11px; color: #9ca3af;
+}
+
+/* Social links */
+.pm-social-links {
+  display: flex; align-items: center; gap: 12px;
+  margin-top: 4px;
+}
+.pm-social-btn {
+  width: 36px; height: 36px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: #1a1a2e; transition: all 0.2s ease;
+  text-decoration: none;
+}
+.pm-social-btn svg { width: 22px; height: 22px; }
+.pm-social-btn:hover { color: #5ee7d7; transform: scale(1.12); }
+
+/* Trailer Card */
+.pm-trailer-card {
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+  flex-shrink: 0;
+  position: relative;
+}
+.pm-trailer-img {
+  width: 100%; height: 140px;
+  overflow: hidden;
+}
+.pm-trailer-img img {
+  width: 100%; height: 100%; object-fit: cover;
+}
+.pm-trailer-btn {
+  position: absolute;
+  bottom: 10px; left: 50%;
+  transform: translateX(-50%);
+  display: flex; align-items: center; gap: 6px;
+  background: rgba(255,255,255,0.9);
+  backdrop-filter: blur(8px);
+  border: none; border-radius: 20px;
+  padding: 6px 14px 6px 8px;
+  font-size: 12px; font-weight: 600; color: #1a1a2e;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+  cursor: pointer; transition: all 0.2s ease;
+}
+.pm-trailer-btn:hover { background: #fff; transform: translateX(-50%) translateY(-2px); }
+.pm-trailer-play {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: #5ee7d7;
+  display: flex; align-items: center; justify-content: center;
+  color: #fff;
+}
+.pm-trailer-play svg { width: 12px; height: 12px; }

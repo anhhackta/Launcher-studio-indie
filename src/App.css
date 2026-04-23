@@ -3,6 +3,7 @@
    No wrapper. Panels positioned directly in app-root.
    ========================================================= */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&display=swap');
+@import url('./PanelMain.css');
 
 :root {
   --c-bg:           #080a0e;
@@ -23,9 +24,10 @@
   --r-md:           14px;
   --r-lg:           18px;
 
-  /* PIG: left edge = var(--gap), fixed anchor */
+  /* PIG dimensions + expand offset */
   --pig-collapsed:  64px;
   --pig-expanded:   190px;
+  --pig-expand-offset: calc(var(--pig-expanded) - var(--pig-collapsed)); /* 126px */
 
   --ease:           cubic-bezier(0.22, 1, 0.36, 1);
   --t-fast:         0.15s;
@@ -138,16 +140,15 @@ img { display: block; }
 .error-retry-btn:hover { background: rgba(232,200,64,0.08); box-shadow: 0 0 16px var(--c-accent-glow); }
 
 /* =========================================================
-   PANEL ICON GAME — absolute in app-root, expands LEFT
-   Left edge FIXED at 0. Width grows rightward.
-   When expanded, panel extends rightward (toward panel-main).
-   No overflow clipping from app-root (transparent + visible).
+   PANEL ICON GAME — expands LEFT into transparent offset zone.
+   Right edge stays fixed. Left edge moves left on expand.
+   Offset zone provides space for leftward expansion.
    ========================================================= */
 .panel-icon-game {
   position: absolute;
   z-index: 30;
-  /* Anchor left edge so the panel grows rightward on expand */
-  left: var(--gap);
+  /* Position right edge fixed: gap + offset + collapsed = right anchor */
+  left: calc(var(--gap) + var(--pig-expand-offset));
   top: var(--gap);
   bottom: var(--gap);
   width: var(--pig-collapsed);
@@ -163,18 +164,19 @@ img { display: block; }
   align-items: flex-end;
   overflow: hidden;
 
-  pointer-events: auto; /* re-enable clicks for this panel */
+  pointer-events: auto;
 
   transition:
     width var(--t-med) var(--ease),
+    left var(--t-med) var(--ease),
     border-color var(--t-fast),
     box-shadow var(--t-med) var(--ease);
 }
 
 .panel-icon-game.expanded {
   width: var(--pig-expanded);
-  border-color: var(--c-border-hi);
-  box-shadow: 6px 0 40px rgba(0,0,0,0.6);
+  /* Move left edge back to gap, right edge stays fixed */
+  left: var(--gap);
 }
 
 /* Logo row — icon on right, text on left */
@@ -242,8 +244,8 @@ img { display: block; }
   text-align: right;
   justify-content: flex-end;
 }
-.pig-game-item:hover  { background: rgba(255,255,255,0.05); }
-.pig-game-item.active { background: rgba(232,200,64,0.06); }
+.pig-game-item:hover  { background: transparent; }
+.pig-game-item.active { background: transparent; }
 
 .pig-active-bar {
   position: absolute;
@@ -342,400 +344,7 @@ img { display: block; }
 }
 .panel-icon-game.expanded .pig-offline-badge span { opacity: 1; }
 
-/* =========================================================
-   PANEL MAIN — absolute in app-root. Fixed position.
-   Left edge starts after the collapsed panel-icon-game.
-   Endfield style: hero fills most, news strip, download bar.
-   ========================================================= */
-.panel-main {
-  position: absolute;
-  z-index: 10;
-  /* gap + pig-collapsed + gap between panels */
-  left: calc(var(--gap) + var(--pig-collapsed) + var(--gap));
-  right: var(--gap);
-  top: var(--gap);
-  bottom: var(--gap);
-
-  background: var(--c-panel);
-  backdrop-filter: blur(24px) saturate(1.5);
-  -webkit-backdrop-filter: blur(24px) saturate(1.5);
-  border: 1px solid var(--c-border);
-  border-radius: var(--r-lg);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  pointer-events: auto; /* re-enable clicks for this panel */
-}
-
-/* Drag region — top strip for window dragging */
-.pm-drag-region {
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 48px;
-  z-index: 20;
-  -webkit-app-region: drag;
-}
-
-/* ── Window Controls — top right, Endfield circle buttons ── */
-.pm-window-controls {
-  position: absolute;
-  top: 12px;
-  right: 14px;
-  z-index: 25;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  -webkit-app-region: no-drag;
-}
-
-.pm-wc-btn {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0,0,0,0.55);
-  border: 1px solid rgba(255,255,255,0.1);
-  backdrop-filter: blur(8px);
-  transition: all var(--t-fast) var(--ease);
-  color: var(--c-text-muted);
-}
-.pm-wc-btn svg { width: 14px; height: 14px; }
-
-.pm-wc-btn:hover { background: rgba(255,255,255,0.12); border-color: var(--c-border-hi); color: var(--c-text); }
-.pm-wc-minimize:hover { background: rgba(255,189,46,0.18); border-color: rgba(255,189,46,0.5); color: #ffbd2e; }
-.pm-wc-close:hover    { background: rgba(255,80,80,0.18);  border-color: rgba(255,80,80,0.5);  color: #ff5f56; }
-
-/* =========================================================
-   HERO SECTION — fills available space
-   ========================================================= */
-.hero-section {
-  position: relative;
-  flex: 1;
-  min-height: 0;
-  overflow: hidden;
-}
-
-.hero-empty { display: flex; align-items: center; justify-content: center; }
-.hero-empty-text { color: var(--c-text-muted); font-size: 14px; }
-
-.hero-bg {
-  position: absolute;
-  inset: 0;
-  background-size: cover;
-  background-position: center 15%;
-  transition: background-image 0.5s var(--ease);
-}
-
-/* Bottom gradient */
-.hero-grad-bottom {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to top,
-    rgba(8, 10, 14, 1)   0%,
-    rgba(8, 10, 14, 0.7) 22%,
-    transparent           50%
-  );
-  z-index: 1;
-}
-
-/* Top gradient */
-.hero-grad-left {
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 80px;
-  background: linear-gradient(to bottom, rgba(8,10,14,0.5), transparent);
-  z-index: 1;
-}
-
-/* Breadcrumb topbar */
-.hero-topbar {
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  z-index: 10;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 14px 110px 0 18px;
-  -webkit-app-region: drag;
-}
-
-.hero-breadcrumb {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 10px;
-  letter-spacing: 1px;
-  -webkit-app-region: no-drag;
-}
-.breadcrumb-brand   { color: var(--c-accent); font-weight: 700; }
-.breadcrumb-sep     { color: var(--c-text-dim); }
-.breadcrumb-game    { color: var(--c-text-muted); }
-.breadcrumb-version {
-  background: rgba(255,255,255,0.05); border: 1px solid var(--c-border);
-  padding: 1px 6px; border-radius: 3px; font-size: 9px; color: var(--c-text-dim);
-}
-
-.hero-topbar-right { display: flex; gap: 6px; -webkit-app-region: no-drag; }
-.hero-tags { display: flex; gap: 5px; }
-.hero-tag {
-  padding: 2px 8px; border: 1px solid var(--c-border); border-radius: 3px;
-  font-size: 9px; color: var(--c-text-muted);
-  font-family: 'Share Tech Mono', monospace; text-transform: uppercase;
-  background: rgba(255,255,255,0.03);
-}
-
-/* Bottom content overlay — title + description + CTA */
-.hero-content {
-  position: absolute;
-  bottom: 0; left: 0; right: 0;
-  z-index: 5;
-  padding: 0 22px 22px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 8px;
-}
-
-.hero-dev-badge {
-  display: flex; align-items: center; gap: 5px;
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 10px; color: var(--c-accent); letter-spacing: 2px;
-}
-.hero-dev-icon { font-size: 7px; }
-
-.hero-logo-img {
-  max-height: 70px; max-width: 280px;
-  object-fit: contain;
-  filter: drop-shadow(0 4px 20px rgba(0,0,0,0.85));
-}
-
-.hero-title {
-  font-family: 'Rajdhani', sans-serif;
-  font-size: clamp(28px, 3.5vw, 46px);
-  font-weight: 700; line-height: 1; letter-spacing: 2px;
-  text-shadow: 0 4px 24px rgba(0,0,0,0.95);
-  color: #fff;
-}
-
-.hero-description {
-  font-size: 12px; color: var(--c-text-muted);
-  max-width: 400px; line-height: 1.5;
-  display: -webkit-box; -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical; overflow: hidden;
-}
-
-/* CTA button — Endfield pill style */
-.hero-play-btn {
-  display: flex; align-items: center; gap: 10px;
-  padding: 9px 18px 9px 14px;
-  background: rgba(8,10,16,0.65);
-  border: 1px solid rgba(255,255,255,0.18);
-  border-radius: 6px;
-  color: var(--c-text);
-  font-family: 'Rajdhani', sans-serif;
-  font-size: 14px; font-weight: 600; letter-spacing: 1.5px;
-  backdrop-filter: blur(16px);
-  transition: all var(--t-fast) var(--ease);
-}
-.hero-play-btn:hover:not(:disabled) {
-  border-color: var(--c-accent); color: var(--c-accent);
-  box-shadow: 0 0 22px rgba(232,200,64,0.15);
-  transform: translateY(-1px);
-}
-.hero-play-btn:disabled       { opacity: 0.35; cursor: not-allowed; }
-.hero-play-btn.downloading    { border-color: var(--c-cyan); color: var(--c-cyan); }
-.hero-play-icon               { display: flex; }
-.hero-play-icon svg           { width: 14px; height: 14px; }
-.hero-play-text               { position: relative; z-index: 1; }
-.hero-play-arrow              { opacity: 0.45; font-size: 14px; }
-
-/* =========================================================
-   NEWS SECTION — Endfield style (thumbnail + tabs + list)
-   ========================================================= */
-.pm-news-wrapper { flex-shrink: 0; }
-
-.news-section {
-  display: grid;
-  grid-template-columns: 165px 1fr;
-  border-top: 1px solid var(--c-border);
-  background: var(--c-panel-2);
-  max-height: 128px;
-}
-
-.news-thumb-area { overflow: hidden; }
-.news-thumb-card { position: relative; width: 100%; height: 100%; }
-.news-thumb-img  { width: 100%; height: 100%; object-fit: cover; }
-
-.news-thumb-overlay {
-  position: absolute; bottom: 0; left: 0; right: 0;
-  padding: 7px;
-  background: linear-gradient(transparent, rgba(0,0,0,0.9));
-}
-.news-pin-badge {
-  display: inline-block; padding: 1px 5px;
-  background: var(--c-accent); color: #000;
-  font-size: 8px; font-weight: 700;
-  font-family: 'Share Tech Mono', monospace;
-  border-radius: 2px; letter-spacing: 1px; margin-bottom: 2px;
-}
-.news-thumb-title {
-  font-size: 10px; color: var(--c-text); line-height: 1.3;
-  display: -webkit-box; -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical; overflow: hidden;
-}
-
-.news-section > div:last-child {
-  display: flex; flex-direction: column; overflow: hidden;
-}
-
-.news-tabs {
-  display: flex; gap: 2px; padding: 7px 12px 0; flex-shrink: 0;
-}
-.news-tab-btn {
-  padding: 3px 11px; border-radius: 4px;
-  font-size: 11px; font-weight: 600;
-  color: var(--c-text-muted); letter-spacing: 0.3px;
-  transition: all var(--t-fast);
-}
-.news-tab-btn:hover  { color: var(--c-text); }
-.news-tab-btn.active { color: var(--c-text); background: rgba(255,255,255,0.06); }
-
-.news-list {
-  flex: 1; padding: 4px 12px 6px;
-  overflow-y: auto; scrollbar-width: none;
-  display: flex; flex-direction: column; gap: 1px;
-}
-.news-list::-webkit-scrollbar { display: none; }
-.news-empty { color: var(--c-text-muted); font-size: 11px; padding: 6px 0; }
-
-.news-item {
-  display: flex; align-items: center; gap: 7px;
-  padding: 3px 5px; border-radius: 4px;
-  cursor: pointer; transition: background var(--t-fast);
-}
-.news-item:hover { background: rgba(255,255,255,0.04); }
-.news-item.read  { opacity: 0.5; }
-
-.news-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--c-text-dim); flex-shrink: 0; }
-.news-dot.pinned { background: var(--c-accent); box-shadow: 0 0 5px var(--c-accent-glow); }
-
-.news-item-title {
-  flex: 1; font-size: 11px; color: var(--c-text);
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-}
-.news-item-date {
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 10px; color: var(--c-text-muted); flex-shrink: 0;
-}
-
-/* =========================================================
-   DOWNLOAD BAR — Endfield yellow bottom bar
-   ========================================================= */
-.download-bar {
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 10px 14px;
-  background: rgba(4,6,10,0.95);
-  border-top: 1px solid var(--c-border);
-  position: relative;
-  overflow: hidden;
-}
-
-.dbar-progress-track {
-  position: absolute; top: 0; left: 0; right: 0;
-  height: 3px;
-  background: rgba(255,255,255,0.04);
-}
-.idle-track { background: transparent; }
-
-.dbar-progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--c-accent), #f0d44c);
-  transition: width 0.4s var(--ease);
-}
-.idle-fill { background: transparent; }
-
-.dbar-progress-glow {
-  position: absolute; top: -3px;
-  width: 8px; height: 8px;
-  background: var(--c-accent); border-radius: 50%;
-  box-shadow: 0 0 12px var(--c-accent), 0 0 24px var(--c-accent-glow);
-  transform: translateX(-50%); transition: left 0.4s var(--ease);
-}
-
-.dbar-stats { display: flex; align-items: center; gap: 16px; flex: 1; min-width: 0; }
-
-.dbar-percent {
-  font-family: 'Rajdhani', sans-serif; font-size: 22px;
-  font-weight: 700; color: var(--c-accent); min-width: 50px;
-}
-.dbar-file-info {
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 11px; color: var(--c-text-muted);
-}
-.dbar-offline-tag {
-  padding: 2px 7px;
-  background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.25);
-  border-radius: 3px; font-size: 9px; color: #f87171;
-  font-family: 'Share Tech Mono', monospace; letter-spacing: 1px;
-}
-.dbar-speed, .dbar-eta {
-  display: flex; align-items: center; gap: 4px;
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 10.5px; color: var(--c-text-muted);
-}
-.dbar-speed svg, .dbar-eta svg { width: 11px; height: 11px; }
-.dbar-status-badge {
-  padding: 2px 9px;
-  background: rgba(0,200,255,0.08); border: 1px solid rgba(0,200,255,0.18);
-  border-radius: 3px; font-size: 10px; color: var(--c-cyan);
-  font-family: 'Share Tech Mono', monospace;
-}
-.dbar-download-spinner {
-  width: 24px; height: 24px; border-radius: 50%;
-  border: 2px solid rgba(232,200,64,0.2); border-top-color: var(--c-accent);
-  animation: spin 0.75s linear infinite; flex-shrink: 0;
-}
-
-.dbar-action { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
-
-/* Download / Play buttons */
-.dbar-btn {
-  display: flex; align-items: center; gap: 8px;
-  padding: 8px 14px; border-radius: 6px;
-  font-family: 'Rajdhani', sans-serif;
-  font-size: 13px; font-weight: 700; letter-spacing: 1px;
-  transition: all var(--t-fast) var(--ease);
-  white-space: nowrap;
-}
-.dbar-btn.play, .dbar-btn.active { background: var(--c-accent); color: #000; }
-.dbar-btn.play:hover { background: #f0d44c; box-shadow: 0 0 20px var(--c-accent-glow); transform: translateY(-1px); }
-.dbar-btn.install {
-  background: transparent; border: 1px solid var(--c-border-hi); color: var(--c-text);
-}
-.dbar-btn.install:hover:not(:disabled) {
-  border-color: var(--c-cyan); color: var(--c-cyan);
-  box-shadow: 0 0 14px rgba(0,200,255,0.12);
-}
-.dbar-btn.coming-soon {
-  background: transparent; border: 1px solid var(--c-border);
-  color: var(--c-text-dim); cursor: not-allowed;
-}
-.dbar-btn:disabled { opacity: 0.45; cursor: not-allowed; }
-.dbar-play-icon { display: flex; }
-.dbar-play-icon svg { width: 13px; height: 13px; }
-.dbar-btn-icon {
-  font-size: 14px; opacity: 0.45;
-  padding-left: 5px; border-left: 1px solid rgba(0,0,0,0.25);
-}
-.dbar-btn.install .dbar-btn-icon,
-.dbar-btn.coming-soon .dbar-btn-icon { border-left-color: var(--c-border); }
+/* Panel Main styles moved to PanelMain.css */
 
 /* =========================================================
    SETTINGS MODAL

@@ -165,3 +165,14 @@ downloads/
 # Cache directories
 .cache/
 .tauri/
+
+
+# OMX local state
+.omx/
+
+# Runtime game payload local
+AntChillGame/
+
+# Local logs
+output.log
+

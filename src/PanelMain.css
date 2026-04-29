@@ -1,54 +1,33 @@
 /* =========================================================
-   PANEL MAIN — Clip-Path Bento Layout
+   PANEL MAIN — Figma SVG Clip-Path Layout
+   Bo góc: 90px (chính) / 70px (sub-panels) / 30px (notch)
    ========================================================= */
 .panel-main {
-  position: absolute;
-  z-index: 10;
+  position: absolute; z-index: 10;
   left: calc(var(--gap) + var(--pig-expand-offset) + var(--pig-collapsed) + var(--gap));
-  right: var(--gap);
-  top: var(--gap);
-  bottom: var(--gap);
-
+  right: var(--gap); top: var(--gap); bottom: var(--gap);
   background: linear-gradient(135deg, #e4eff2 0%, #f0f4f8 100%);
-  border: 1.5px solid rgba(255, 255, 255, 0.6);
-  border-radius: 24px;
-  overflow: hidden;
-  pointer-events: auto;
-  box-shadow:
-    0 0 0 1px rgba(94, 231, 215, 0.08),
-    0 0 30px rgba(94, 231, 215, 0.1),
-    0 8px 32px rgba(0, 0, 0, 0.08);
-
-  display: grid;
-  grid-template-columns: 1.65fr 1fr;
-  grid-template-rows: 1fr;
-  gap: 12px;
-  padding: 12px;
+  border: 1.5px solid rgba(255,255,255,0.6);
+  border-radius: 24px; overflow: hidden; pointer-events: auto;
+  box-shadow: 0 0 0 1px rgba(94,231,215,0.08), 0 0 30px rgba(94,231,215,0.1), 0 8px 32px rgba(0,0,0,0.08);
+  display: grid; grid-template-columns: 1.65fr 1fr;
+  gap: 12px; padding: 12px;
 }
 
-/* Drag region */
+/* Drag + Window controls */
 .pm-drag-region {
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 48px;
-  z-index: 20;
-  -webkit-app-region: drag;
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 48px; z-index: 20; -webkit-app-region: drag;
 }
-
-/* ── Window Controls ── */
 .pm-window-controls {
-  position: absolute;
-  top: 16px; right: 18px;
-  z-index: 25;
-  display: flex; align-items: center; gap: 6px;
-  -webkit-app-region: no-drag;
+  position: absolute; top: 16px; right: 18px; z-index: 25;
+  display: flex; align-items: center; gap: 6px; -webkit-app-region: no-drag;
 }
 .pm-wc-btn {
   width: 30px; height: 30px; border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
   background: rgba(255,255,255,0.7); border: 1px solid rgba(0,0,0,0.06);
-  backdrop-filter: blur(8px);
-  transition: all 0.15s ease; color: #8a919a;
+  backdrop-filter: blur(8px); transition: all 0.15s ease; color: #8a919a;
 }
 .pm-wc-btn svg { width: 13px; height: 13px; }
 .pm-wc-btn:hover { background: rgba(255,255,255,0.95); color: #333; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
@@ -56,407 +35,265 @@
 .pm-wc-close:hover { background: rgba(255,80,80,0.15); color: #cc3333; }
 
 /* =========================================================
-   PANELMAINGAME — clip-path shaped game card
+   PANELMAINGAME — container for all 4 clip-path layers
    ========================================================= */
 .panelmaingame {
-  position: relative;
-  height: 100%;
-  min-height: 0;
+  position: relative; height: 100%; min-height: 0;
 }
 
-/* Clipped background layer */
-.panelmaingame-clipped {
-  position: absolute;
-  inset: 0;
-  clip-path: url(#game-clip);
-  border-radius: 20px;
-  overflow: hidden;
-}
-
-/* Background image */
-.panelmaingame-bg {
+/* ── Layer 1: Background image clipped by background.svg ── */
+.pmg-bg-clip {
   position: absolute; inset: 0;
-  background-size: cover;
-  background-position: center 20%;
+  clip-path: url(#clip-bg);
+}
+.pmg-bg-img {
+  position: absolute; inset: 0;
+  background-size: cover; background-position: center 20%;
   transition: background-image 0.5s ease;
 }
-
-/* Gradient overlay on image */
-.panelmaingame-gradient {
+.pmg-bg-gradient {
   position: absolute; inset: 0;
-  background: linear-gradient(
-    to bottom,
-    rgba(0,0,0,0.05) 0%,
-    rgba(0,0,0,0.15) 40%,
-    rgba(0,0,0,0.45) 100%
-  );
+  background: linear-gradient(to bottom, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.15) 40%, rgba(0,0,0,0.5) 100%);
 }
 
-/* ── Brand text (top-left notch area) ── */
-.panelmaingame-brand {
+/* Nav icons (inside clipped area) */
+.pmg-icons {
   position: absolute;
-  top: 12px; left: 12px;
-  /* Sits in the notch gap: ~39.8% wide, ~17.5% tall */
-  width: 38%;
-  height: 15%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: 'Rajdhani', sans-serif;
-  font-size: 14px;
-  font-weight: 600;
-  color: #6b7280;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  pointer-events: none;
-}
-
-/* ── Nav icons (inside clipped area) ── */
-.panelmaingame-icons {
-  position: absolute;
-  top: calc(17.5% + 16px); left: 16px;
-  z-index: 10;
+  top: calc(17.5% + 12px); left: 14px; z-index: 10;
   display: flex; flex-direction: column; gap: 6px;
-  background: rgba(255,255,255,0.25);
-  backdrop-filter: blur(14px);
+  background: rgba(255,255,255,0.22); backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  padding: 8px;
-  border-radius: 40px;
-  border: 1px solid rgba(255,255,255,0.35);
-  -webkit-app-region: no-drag;
+  padding: 8px; border-radius: 40px;
+  border: 1px solid rgba(255,255,255,0.3); -webkit-app-region: no-drag;
 }
-
 .pmg-nav-btn {
   width: 34px; height: 34px; border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
-  background: rgba(255,255,255,0.15);
-  color: rgba(255,255,255,0.85);
-  transition: all 0.2s ease;
-  border: none; cursor: pointer;
+  background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.85);
+  transition: all 0.2s ease; border: none; cursor: pointer;
 }
 .pmg-nav-btn svg { width: 16px; height: 16px; }
-.pmg-nav-btn:hover {
-  background: rgba(255,255,255,0.5);
-  color: #1a1a2e;
-  transform: scale(1.08);
+.pmg-nav-btn:hover { background: rgba(255,255,255,0.5); color: #1a1a2e; transform: scale(1.08); }
+
+/* ── Layer 2: Developer name (name developer.svg) — top-left notch ── */
+.pmg-developer {
+  position: absolute;
+  top: 0; left: 0;
+  /* Proportional to background.svg notch: 435/1092 × 140/800 */
+  width: 39.8%; height: 17.5%;
+  clip-path: url(#clip-dev);
+  background: rgba(255,255,255,0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex; align-items: center; justify-content: center;
+  padding-left: 14%;
+}
+.pmg-developer-text {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 14px; font-weight: 600;
+  color: #4b5563; letter-spacing: 2px; text-transform: uppercase;
 }
 
-/* ── Panelversion (frosted glass, bottom-left inside clip) ── */
-.panelversion {
+/* ── Layer 3: Game name + version (name game.svg) — bottom-left ── */
+.pmg-namegame {
   position: absolute;
-  bottom: 28%; left: 20px;
-  z-index: 5;
-  background: rgba(255,255,255,0.22);
+  bottom: 0; left: 0;
+  /* Proportional: 406/1092 × 228/800 */
+  width: 37.2%; height: 28.5%;
+  clip-path: url(#clip-name);
+  background: rgba(255,255,255,0.25);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255,255,255,0.35);
-  border-radius: 20px;
-  padding: 20px 28px;
   display: flex; flex-direction: column;
-  align-items: flex-start; gap: 4px;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.12);
-  max-width: 55%;
+  justify-content: flex-end; align-items: flex-start;
+  padding: 12% 10% 10% 12%;
+  gap: 4px;
 }
-
-.panelversion-label {
+.pmg-namegame-label {
   font-family: 'Inter', sans-serif;
   font-size: 11px; font-weight: 600;
   color: rgba(255,255,255,0.7);
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
+  letter-spacing: 1.5px; text-transform: uppercase;
 }
-
-.panelversion-title {
+.pmg-namegame-title {
   font-family: 'Rajdhani', sans-serif;
-  font-size: clamp(24px, 3vw, 38px);
+  font-size: clamp(22px, 2.8vw, 36px);
   font-weight: 800; line-height: 1;
-  letter-spacing: 3px;
-  color: #fff;
+  letter-spacing: 2px; color: #fff;
   text-shadow: 0 2px 12px rgba(0,0,0,0.4);
   margin: 0;
 }
 
-/* ── Panelplay (bottom-right notch area) ── */
-.panelplay {
+/* ── Layer 4: Play / Download (play.svg) — bottom-right notch ── */
+.pmg-play {
   position: absolute;
-  /* Notch starts at ~60.4% from left, ~75% from top */
-  right: 0;
-  bottom: 0;
-  width: 39%;
-  height: 24%;
+  bottom: 0; right: 0;
+  /* Proportional: 406/1092 × 174/800 */
+  width: 37.2%; height: 21.75%;
+  clip-path: url(#clip-play);
   background: #fff;
-  border-radius: 20px;
   display: flex; flex-direction: column;
   align-items: center; justify-content: center;
-  padding: 12px 16px 24px;
-  gap: 8px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  padding: 8px 12px 0;
+  gap: 6px;
 }
-
-.panelplay-header {
+.pmg-play-content {
   display: flex; flex-direction: column;
-  align-items: center; gap: 8px;
-  width: 100%;
+  align-items: center; gap: 6px;
 }
-
-.panelplay-title {
+.pmg-play-label {
   font-family: 'Inter', sans-serif;
-  font-size: 15px; font-weight: 700;
-  color: #1a1a2e; margin: 0;
+  font-size: 15px; font-weight: 700; color: #1a1a2e; margin: 0;
 }
-
-.panelplay-stats {
-  display: flex; align-items: center; gap: 16px;
+.pmg-play-stats {
+  display: flex; align-items: center; gap: 14px;
 }
-
-.panelplay-stat {
-  display: flex; flex-direction: column;
-  align-items: center; gap: 2px;
+.pmg-play-stat {
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
   font-size: 10px; color: #6b7280; font-weight: 500;
 }
-.panelplay-stat svg { width: 16px; height: 16px; stroke: #1a1a2e; }
+.pmg-play-stat svg { width: 16px; height: 16px; stroke: #1a1a2e; }
 
-/* Floating action button */
-.panelplay-btn {
+/* Floating action button (sits in the concave notch at bottom-center of play.svg) */
+.pmg-play-fab {
   position: absolute;
-  bottom: -18px; left: 50%;
-  transform: translateX(-50%);
-  width: 48px; height: 48px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.6);
-  padding: 5px;
+  bottom: -2px; left: 50%; transform: translateX(-50%);
+  width: 48px; height: 48px; border-radius: 50%;
+  background: rgba(255,255,255,0.6); padding: 5px;
   display: flex; align-items: center; justify-content: center;
-  border: none; cursor: pointer;
-  transition: all 0.2s ease;
-  z-index: 5;
+  border: none; cursor: pointer; transition: all 0.2s ease; z-index: 5;
 }
-.panelplay-btn-inner {
-  width: 100%; height: 100%;
-  border-radius: 50%;
+.pmg-play-fab-inner {
+  width: 100%; height: 100%; border-radius: 50%;
   background: #5ee7d7;
-  display: flex; align-items: center; justify-content: center;
-  color: #fff;
-  box-shadow: 0 4px 12px rgba(94, 231, 215, 0.4);
-  transition: transform 0.2s ease;
+  display: flex; align-items: center; justify-content: center; color: #fff;
+  box-shadow: 0 4px 12px rgba(94,231,215,0.4); transition: transform 0.2s ease;
 }
-.panelplay-btn-inner svg { width: 18px; height: 18px; }
-.panelplay-btn:hover .panelplay-btn-inner { transform: scale(1.1); }
-.panelplay-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.pmg-play-fab-inner svg { width: 18px; height: 18px; }
+.pmg-play-fab:hover .pmg-play-fab-inner { transform: scale(1.1); }
+.pmg-play-fab:disabled { opacity: 0.5; cursor: not-allowed; }
 
 /* Progress bar */
-.panelplay-progress {
-  position: absolute; bottom: 0; left: 0; right: 0;
-  height: 3px; background: rgba(0,0,0,0.1); border-radius: 0 0 20px 20px;
+.pmg-play-progress {
+  position: absolute; bottom: 0; left: 15%; right: 15%;
+  height: 3px; background: rgba(0,0,0,0.08); border-radius: 2px;
 }
-.panelplay-progress-fill {
-  height: 100%; border-radius: 0 0 20px 20px;
+.pmg-play-progress-fill {
+  height: 100%; border-radius: 2px;
   background: linear-gradient(90deg, #5ee7d7, #4ecdc4);
   transition: width 0.4s ease;
 }
 
 /* =========================================================
-   SIDEBAR — right column
+   SIDEBAR
    ========================================================= */
 .pm-sidebar {
   display: flex; flex-direction: column;
   gap: 12px; min-height: 0; height: 100%;
 }
-
-/* User Card */
 .pm-user-card {
-  background: #fff;
-  border-radius: 16px;
-  padding: 10px 14px;
-  display: flex; align-items: center;
+  background: #fff; border-radius: 16px;
+  padding: 10px 14px; display: flex; align-items: center;
   justify-content: flex-end; gap: 8px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.04);
-  flex-shrink: 0;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.04); flex-shrink: 0;
 }
-.pm-user-greeting {
-  font-size: 13px; font-weight: 600; color: #1a1a2e;
-}
+.pm-user-greeting { font-size: 13px; font-weight: 600; color: #1a1a2e; }
 .pm-user-avatar {
   width: 32px; height: 32px; border-radius: 50%;
-  overflow: hidden; flex-shrink: 0;
-  border: 2px solid #e2e8f0;
+  overflow: hidden; flex-shrink: 0; border: 2px solid #e2e8f0;
 }
-.pm-user-avatar img {
-  width: 100%; height: 100%; object-fit: cover;
-}
+.pm-user-avatar img { width: 100%; height: 100%; object-fit: cover; }
 
 /* =========================================================
-   PANELNEWSGAME — news carousel + social links
+   PANELNEWSGAME
    ========================================================= */
 .panelnewsgame {
-  background: #fff;
-  border-radius: 16px;
-  padding: 14px 16px;
-  display: flex; flex-direction: column;
-  gap: 10px;
+  background: #fff; border-radius: 16px; padding: 14px 16px;
+  display: flex; flex-direction: column; gap: 10px;
   flex: 1; min-height: 0;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.04);
-  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.04); overflow: hidden;
 }
+.pm-news-header { display: flex; align-items: center; justify-content: space-between; }
+.pm-news-header h3 { font-family: 'Rajdhani', sans-serif; font-size: 16px; font-weight: 700; color: #1a1a2e; margin: 0; }
+.pm-news-badge { background: #f0fdf4; border: 1px solid #bbf7d0; padding: 2px 8px; border-radius: 12px; font-size: 10px; font-weight: 600; color: #22c55e; }
 
-.pm-news-header {
-  display: flex; align-items: center; justify-content: space-between;
-}
-.pm-news-header h3 {
-  font-family: 'Rajdhani', sans-serif;
-  font-size: 16px; font-weight: 700; color: #1a1a2e; margin: 0;
-}
-.pm-news-badge {
-  background: #f0fdf4; border: 1px solid #bbf7d0;
-  padding: 2px 8px; border-radius: 12px;
-  font-size: 10px; font-weight: 600; color: #22c55e;
-}
+/* Carousel — horizontal slide */
+.pm-news-carousel { flex: 1; position: relative; min-height: 60px; overflow: hidden; }
+.pm-news-track { display: flex; transition: transform 0.4s cubic-bezier(0.25,0.8,0.25,1); height: 100%; }
+.pm-news-slide { min-width: 100%; width: 100%; display: flex; flex-direction: column; gap: 4px; padding: 4px; box-sizing: border-box; }
+.pm-news-slide h4 { font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600; color: #1a1a2e; margin: 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.pm-news-slide p { font-size: 11px; color: #6b7280; margin: 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.pm-news-date { font-size: 10px; color: #9ca3af; margin-top: auto; }
+.pm-news-empty { font-size: 12px; color: #9ca3af; text-align: center; margin-top: 20px; }
 
-/* News carousel — horizontal slide */
-.pm-news-carousel {
-  flex: 1; position: relative;
-  min-height: 60px; overflow: hidden;
-}
-.pm-news-track {
-  display: flex;
-  transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-  height: 100%;
-}
-.pm-news-slide {
-  min-width: 100%; width: 100%;
-  display: flex; flex-direction: column; gap: 4px;
-  padding: 4px 4px;
-  box-sizing: border-box;
-}
-.pm-news-slide h4 {
-  font-family: 'Inter', sans-serif;
-  font-size: 13px; font-weight: 600; color: #1a1a2e; margin: 0;
-  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-.pm-news-slide p {
-  font-size: 11px; color: #6b7280; margin: 0;
-  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-.pm-news-date {
-  font-size: 10px; color: #9ca3af; margin-top: auto;
-}
-.pm-news-empty {
-  font-size: 12px; color: #9ca3af; text-align: center;
-  margin-top: 20px;
-}
-
-/* Prev / Next arrow buttons */
+/* Arrows */
 .pm-news-arrow {
-  position: absolute; top: 50%;
-  transform: translateY(-50%);
+  position: absolute; top: 50%; transform: translateY(-50%);
   width: 24px; height: 24px; border-radius: 50%;
-  background: rgba(255,255,255,0.85);
-  border: 1px solid #e2e8f0;
+  background: rgba(255,255,255,0.85); border: 1px solid #e2e8f0;
   display: flex; align-items: center; justify-content: center;
-  color: #1a1a2e; cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-  z-index: 2;
+  color: #1a1a2e; cursor: pointer; transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08); z-index: 2;
 }
 .pm-news-arrow svg { width: 14px; height: 14px; }
 .pm-news-arrow:hover { background: #5ee7d7; color: #fff; border-color: #5ee7d7; }
 .pm-news-prev { left: 0; }
 .pm-news-next { right: 0; }
 
-/* Carousel dots */
-.pm-news-dots {
-  display: flex; align-items: center; justify-content: center; gap: 6px;
-}
+/* Dots */
+.pm-news-dots { display: flex; align-items: center; justify-content: center; gap: 6px; }
 .pm-news-dot-btn {
   width: 6px; height: 6px; border-radius: 50%;
   background: #d1d5db; border: none; padding: 0;
   cursor: pointer; transition: all 0.2s ease;
 }
-.pm-news-dot-btn.active {
-  background: #5ee7d7; width: 16px; border-radius: 3px;
-}
+.pm-news-dot-btn.active { background: #5ee7d7; width: 16px; border-radius: 3px; }
 
 /* Social links */
-.pm-social-links {
-  display: flex; align-items: center; justify-content: center; gap: 12px;
-  margin-top: 4px;
-}
-.pm-social-btn {
-  width: 34px; height: 34px; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  color: #1a1a2e; transition: all 0.2s ease;
-  text-decoration: none;
-}
+.pm-social-links { display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 4px; }
+.pm-social-btn { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #1a1a2e; transition: all 0.2s ease; text-decoration: none; }
 .pm-social-btn svg { width: 20px; height: 20px; }
 .pm-social-btn:hover { color: #5ee7d7; transform: scale(1.12); }
 
 /* =========================================================
-   PANELTRAILERGAME — trailer thumbnail + play button
+   PANELTRAILERGAME
    ========================================================= */
 .paneltrailergame {
-  background: #fff;
-  border-radius: 16px;
+  background: #fff; border-radius: 16px;
   box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-  flex-shrink: 0;
-  position: relative;
-  height: 140px;
-  margin-bottom: 12px;
-  cursor: pointer;
-  overflow: visible;
+  flex-shrink: 0; position: relative;
+  height: 140px; margin-bottom: 12px;
+  cursor: pointer; overflow: visible;
 }
-.paneltrailergame-img {
-  width: 100%; height: 100%;
-  overflow: hidden;
-  border-radius: 16px;
-}
-.paneltrailergame-img img {
-  width: 100%; height: 100%; object-fit: cover;
-  transition: transform 0.3s ease;
-}
-.paneltrailergame:hover .paneltrailergame-img img {
-  transform: scale(1.05);
-}
+.paneltrailergame-img { width: 100%; height: 100%; overflow: hidden; border-radius: 16px; }
+.paneltrailergame-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease; }
+.paneltrailergame:hover .paneltrailergame-img img { transform: scale(1.05); }
 .paneltrailergame-btn {
-  position: absolute;
-  bottom: -14px; left: 50%;
-  transform: translateX(-50%);
+  position: absolute; bottom: -14px; left: 50%; transform: translateX(-50%);
   display: flex; align-items: center; gap: 8px;
-  background: #fff;
-  border: none; border-radius: 30px;
-  padding: 6px 16px 6px 8px;
-  font-size: 13px; font-weight: 600; color: #1a1a2e;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
-  cursor: pointer; transition: all 0.2s ease;
-  z-index: 2;
+  background: #fff; border: none; border-radius: 30px;
+  padding: 6px 16px 6px 8px; font-size: 13px; font-weight: 600; color: #1a1a2e;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15); cursor: pointer; transition: all 0.2s ease; z-index: 2;
 }
-.paneltrailergame-btn:hover {
-  background: #f8f9fa;
-  transform: translateX(-50%) translateY(-2px);
-}
+.paneltrailergame-btn:hover { background: #f8f9fa; transform: translateX(-50%) translateY(-2px); }
 .paneltrailergame-play {
   width: 28px; height: 28px; border-radius: 50%;
-  background: #5ee7d7;
-  display: flex; align-items: center; justify-content: center;
-  color: #fff;
-  box-shadow: 0 2px 8px rgba(94, 231, 215, 0.4);
+  background: #5ee7d7; display: flex; align-items: center; justify-content: center;
+  color: #fff; box-shadow: 0 2px 8px rgba(94,231,215,0.4);
 }
 .paneltrailergame-play svg { width: 12px; height: 12px; }
 
 /* =========================================================
-   TRAILER MODAL — fullscreen popup
+   TRAILER MODAL
    ========================================================= */
 .pm-trailer-modal {
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.8);
-  z-index: 100;
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.8); z-index: 100;
   display: flex; align-items: center; justify-content: center;
   backdrop-filter: blur(8px);
 }
 .pm-trailer-modal-content {
-  position: relative;
-  width: 80%; max-width: 900px; aspect-ratio: 16/9;
+  position: relative; width: 80%; max-width: 900px; aspect-ratio: 16/9;
   background: #000; border-radius: 16px; overflow: hidden;
   box-shadow: 0 10px 40px rgba(0,0,0,0.5);
 }
@@ -465,12 +302,9 @@
   color: white; width: 32px; height: 32px;
   display: flex; align-items: center; justify-content: center;
   border-radius: 50%; background: rgba(255,255,255,0.2);
-  transition: all 0.2s ease; cursor: pointer;
-  border: none;
+  transition: all 0.2s ease; cursor: pointer; border: none;
 }
-.pm-trailer-modal-close:hover {
-  background: rgba(255,255,255,0.4); transform: scale(1.1);
-}
+.pm-trailer-modal-close:hover { background: rgba(255,255,255,0.4); transform: scale(1.1); }
 .pm-trailer-no-video {
   width: 100%; height: 100%; display: flex;
   align-items: center; justify-content: center;
